@@ -1,5 +1,8 @@
 from scraper import ChromeScraper
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class SteamClient(object):
@@ -8,7 +11,6 @@ class SteamClient(object):
 
     def __init__(self):
         self.client = ChromeScraper()
-        self.client.browser.implicitly_wait(3)
 
     def get_game(self, game_id, pages=3):
         url = '{}{}'.format(self.GAME_URL, game_id)
@@ -22,9 +24,12 @@ class SteamClient(object):
 
         for i in range(0, pages):
             try:
-                self.client.browser.find_element_by_class_name(
-                    'btnv6_blue_blue_innerfade').click()
-            except NoSuchElementException:
+                button = WebDriverWait(self.client.browser, 10).until(
+                    EC.presence_of_element_located(
+                        (By.CLASS_NAME, 'btnv6_blue_blue_innerfade')
+                    ))
+                button.click()
+            except TimeoutException:
                 break
 
         return self.client.html

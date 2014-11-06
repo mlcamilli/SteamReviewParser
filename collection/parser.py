@@ -11,7 +11,6 @@ def parse_game(game_id):
         review_divs = []
         divs = soup.find(id='Reviews_all').find_all('div', recursive=False)
         for div in divs:
-            print div.attrs.get('id')
             review_divs.extend(div.find_all('div', 'review_box'))
         for div in review_divs:
             positive = 'thumbsUp' in div.find('div', 'thumb').img.attrs.get('src')
