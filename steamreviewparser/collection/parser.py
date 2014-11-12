@@ -9,15 +9,16 @@ def parse_game(game_id):
         html = client.get_game(game_id)
         soup = BeautifulSoup(html)
         review_divs = []
-        game_name = soup.title.text.replace(' on Steam', '')
+        game_name = soup.find('div', 'apphub_AppName').text.strip()
         divs = soup.find(id='Reviews_all').find_all('div', recursive=False)
         for div in divs:
             review_divs.extend(div.find_all('div', 'review_box'))
-        print len(review_divs)
         for div in review_divs:
-            positive = 'thumbsUp' in div.find('div', 'thumb').img.attrs.get('src')
+            positive = 'thumbsUp' in div.find('div',
+                                              'thumb').img.attrs.get('src')
             div_id = [div for div in div.find_all('div', recursive=False) if
-                    'id' in div.attrs][0].attrs.get('id')
+                      'id' in div.attrs][0].attrs.get('id').replace(
+                'ReviewContentall', '')
 
             numbers_div = div.find('div', 'header', recursive=False)
             if numbers_div:

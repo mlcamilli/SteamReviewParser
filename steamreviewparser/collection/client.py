@@ -12,7 +12,7 @@ class SteamClient(object):
     def __init__(self):
         self.client = ChromeScraper()
 
-    def get_game(self, game_id, pages=3):
+    def get_game(self, game_id, pages=10):
         url = '{}{}'.format(self.GAME_URL, game_id)
         self.client.get(url)
         if 'agecheck' in self.client.browser.current_url:
