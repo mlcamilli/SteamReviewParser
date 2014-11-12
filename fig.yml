@@ -4,11 +4,14 @@ web:
    - db
   ports:
    - "8000:8000"
+  volumes:
+    - .:/code
+  privileged: true
 db:
   image: dockerfile/elasticsearch
   ports: 
    - "9200:9200"
    - "9300:9300"
   volumes:
-      - data/:/data
-  command: /elasticsearch/bin/elasticsearch -Des.config=/data/elasticsearch.yml
+      - es/:/es
+  command: "/elasticsearch/bin/elasticsearch -Des.config=/es/elasticsearch.yml"

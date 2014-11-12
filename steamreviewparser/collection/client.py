@@ -16,8 +16,8 @@ class SteamClient(object):
         url = '{}{}'.format(self.GAME_URL, game_id)
         self.client.get(url)
         if 'agecheck' in self.client.browser.current_url:
-            year_dropdown = self.client.find_element_by_id('ageYear')
-            self.select_dropdown_option(year_dropdown, "1960")
+            year_dropdown = self.client.browser.find_element_by_id('ageYear')
+            self.client.select_dropdown_option(year_dropdown, "1960")
             submit = self.client.browser.find_element_by_class_name(
                 'btnv6_blue_hoverfade')
             submit.click()
@@ -26,7 +26,7 @@ class SteamClient(object):
             try:
                 button = WebDriverWait(self.client.browser, 10).until(
                     EC.presence_of_element_located(
-                        (By.CLASS_NAME, 'btnv6_blue_blue_innerfade')
+                        (By.LINK_TEXT, 'Load More Reviews')
                     ))
                 button.click()
             except TimeoutException:

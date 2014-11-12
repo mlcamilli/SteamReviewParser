@@ -9,9 +9,11 @@ def parse_game(game_id):
         html = client.get_game(game_id)
         soup = BeautifulSoup(html)
         review_divs = []
+        game_name = soup.title.text.replace(' on Steam', '')
         divs = soup.find(id='Reviews_all').find_all('div', recursive=False)
         for div in divs:
             review_divs.extend(div.find_all('div', 'review_box'))
+        print len(review_divs)
         for div in review_divs:
             positive = 'thumbsUp' in div.find('div', 'thumb').img.attrs.get('src')
             div_id = [div for div in div.find_all('div', recursive=False) if
@@ -27,6 +29,6 @@ def parse_game(game_id):
 
             reviews.append({'review': div.find('div', 'content').text.strip(),
                             'rating': 'positive' if positive else 'negative',
-                            'id': div_id, 'votes': votes, 'total': total})
-
+                            'id': div_id, 'votes': votes, 'total': total,
+                            'game_name': game_name, 'game_id': game_id})
     return reviews

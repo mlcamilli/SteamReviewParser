@@ -13,3 +13,4 @@ six==1.8.0
 texttable==0.8.1
 websocket-client==0.11.0
 wsgiref==0.1.2
+elasticsearch==1.2.0
